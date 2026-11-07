@@ -927,3 +927,177 @@ footer p::before {
     border-radius: 99px;
     background: linear-gradient(90deg, var(--primary), var(--cyan));
 }
+
+
+/* ===== Responsivo mobile ===== */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+}
+
+img { max-width: 100%; }
+
+@media (max-width: 900px) {
+    /* background-attachment: fixed é instável no iOS/Android */
+    body { background-attachment: scroll; }
+    .hero::before { width: 360px; height: 360px; }
+}
+
+@media (max-width: 650px) {
+    /* Cabeçalho em uma linha só: ocupa menos tela e não cobre o conteúdo */
+    header,
+    header.scrolled { padding: 12px 0; }
+
+    header .container {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .logo { font-size: 1.1rem; white-space: nowrap; }
+    .subtitle-role { display: none; }
+    .subtitle-name { font-size: 0.8rem; padding: 4px 12px; white-space: nowrap; }
+
+    .hero { padding: 110px 0 64px; }
+    .hero p { font-size: 1rem; line-height: 1.7; }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 28px;
+    }
+
+    .btn { justify-content: center; min-height: 48px; }
+
+    .about-card { padding: 20px; }
+
+    .projects,
+    .contact { padding: 64px 0; }
+
+    .section-title { margin-bottom: 36px; }
+
+    .project-card { padding: 24px; border-radius: 16px; }
+    .project-icon { width: 54px; height: 54px; margin-bottom: 20px; }
+
+    .contact-link { min-height: 52px; min-width: 0; }
+
+    footer { padding: 32px 0 88px; }
+}
+
+/* Celular (retrato ou paisagem): só o WhatsApp flutuante, os outros já estão em "Contato" */
+@media (max-width: 650px), (max-height: 500px) {
+    .floating-btn:not(.whatsapp) { display: none; }
+    .floating-buttons { right: 16px; bottom: 16px; }
+    .floating-btn { width: 52px; height: 52px; }
+    .tooltip { display: none; }
+}
+
+@media (max-width: 380px) {
+    .container { width: 92%; }
+    .hero h1 { font-size: 2.4rem; }
+    .project-card { padding: 20px; }
+}
+
+/* Telas de toque: sem efeitos de hover "grudados" */
+@media (hover: none) {
+    .project-card:hover,
+    .contact-link:hover,
+    .skill:hover,
+    .btn:hover,
+    .floating-btn:hover { transform: none; }
+
+    .project-card:hover::before { transform: none; }
+    .project-card:hover::after { opacity: 0; }
+    .about-card:hover .about-photo img { transform: none; }
+
+    .project-card:active,
+    .contact-link:active,
+    .btn:active { transform: scale(0.98); }
+}
+/* ===== Responsivo mobile ===== */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+}
+
+img { max-width: 100%; }
+
+@media (max-width: 900px) {
+    body { background-attachment: scroll; }
+    .hero::before { width: 360px; height: 360px; }
+}
+
+@media (max-width: 650px) {
+    header,
+    header.scrolled { padding: 12px 0; }
+
+    header .container {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .logo { font-size: 1.1rem; white-space: nowrap; }
+    .subtitle-role { display: none; }
+    .subtitle-name { font-size: 0.8rem; padding: 4px 12px; white-space: nowrap; }
+
+    .hero { padding: 110px 0 64px; }
+    .hero p { font-size: 1rem; line-height: 1.7; }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 28px;
+    }
+
+    .btn { justify-content: center; min-height: 48px; }
+
+    .about-card { padding: 20px; }
+
+    .projects,
+    .contact { padding: 64px 0; }
+
+    .section-title { margin-bottom: 36px; }
+
+    .project-card { padding: 24px; border-radius: 16px; }
+    .project-icon { width: 54px; height: 54px; margin-bottom: 20px; }
+
+    .contact-link { min-height: 52px; min-width: 0; }
+
+    footer { padding: 32px 0 88px; }
+}
+
+@media (max-width: 650px), (max-height: 500px) {
+    .floating-btn:not(.whatsapp) { display: none; }
+    .floating-buttons { right: 16px; bottom: 16px; }
+    .floating-btn { width: 52px; height: 52px; }
+    .tooltip { display: none; }
+}
+
+@media (max-width: 380px) {
+    .container { width: 92%; }
+    .hero h1 { font-size: 2.4rem; }
+    .project-card { padding: 20px; }
+}
+
+@media (hover: none) {
+    .project-card:hover,
+    .contact-link:hover,
+    .skill:hover,
+    .btn:hover,
+    .floating-btn:hover { transform: none; }
+
+    .project-card:hover::before { transform: none; }
+    .project-card:hover::after { opacity: 0; }
+    .about-card:hover .about-photo img { transform: none; }
+
+    .project-card:active,
+    .contact-link:active,
+    .btn:active { transform: scale(0.98); }
+}
