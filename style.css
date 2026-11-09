@@ -1,0 +1,1060 @@
+
+
+/* Fontes: Clash Display + Satoshi (Fontshare), JetBrains Mono (Google) */
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=satoshi@400,500,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --p {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+:root {
+  /* Paleta */
+  --void: #050506;
+  --obsidian: #0d0d10;
+  --graphite: #1a1a1f;
+  --plasma: #7c3aed;
+  --laser: #22d3ee;
+  --ember: #f97316;
+  --bone: #f5f3ef;
+  --smoke: #8b8b94;
+
+  /* Derivados */
+  --line: rgba(245, 243, 239, 0.09);
+  --line-strong: rgba(245, 243, 239, 0.22);
+  --signature: linear-gradient(135deg, var(--plasma) 0%, var(--laser) 100%);
+  --ok: #34d399;
+
+  /* Tipografia */
+  --font-display: 'Clash Display', 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-body: 'Satoshi', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Escala modular 1.25 */
+  --step--1: clamp(0.75rem, 0.73rem + 0.1vw, 0.8rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --step-3: clamp(1.9rem, 1.5rem + 2vw, 3rem);
+
+  /* Layout */
+  --max: 1440px;
+  --gutter: clamp(20px, 5vw, 72px);
+  --section-y: clamp(96px, 14vw, 192px);
+
+  /* Movimento */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 700ms;
+}
+
+
+/* ==========================================================================
+   2. RESET & BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--void);
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: clip;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.7;
+  color: var(--bone);
+  background:
+    radial-gradient(60vw 50vh at 0% 0%, rgba(124, 58, 237, 0.10), transparent 70%),
+    radial-gradient(50vw 40vh at 100% 100%, rgba(34, 211, 238, 0.06), transparent 70%),
+    var(--void);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Textura de ruído — tira o "liso digital" */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--plasma);
+  color: var(--bone);
+}
+
+/* Foco visível com estilo próprio */
+:focus-visible {
+  outline: 2px solid var(--laser);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Scrollbar discreta */
+html {
+  scrollbar-color: var(--graphite) var(--void);
+  scrollbar-width: thin;
+}
+
+.container {
+  width: min(var(--max), 100% - var(--gutter) * 2);
+  margin-inline: auto;
+}
+
+
+/* ==========================================================================
+   3. HEADER
+   ========================================================================== */
+
+header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  padding: 28px 0;
+  border-bottom: 1px solid transparent;
+  transition:
+    padding var(--dur) var(--ease),
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    backdrop-filter var(--dur) var(--ease);
+}
+
+header.scrolled {
+  padding: 14px 0;
+  background: rgba(5, 5, 6, 0.72);
+  border-bottom-color: var(--line);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+}
+
+.logo::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--signature);
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.8);
+}
+
+.header-subtitles {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.subtitle-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bone);
+}
+
+.subtitle-role {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--smoke);
+}
+
+.subtitle-role::before {
+  content: '/';
+  margin-right: 14px;
+  color: var(--graphite);
+}
+
+
+/* ==========================================================================
+   4. HERO — The Cold Open
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding: 160px 0 clamp(72px, 12vh, 140px);
+  overflow: hidden;
+}
+
+/* Aurora em CSS: substitui o shader WebGL */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: -25%;
+  z-index: -1;
+  background:
+    radial-gradient(38% 45% at 18% 28%, rgba(124, 58, 237, 0.42), transparent 70%),
+    radial-gradient(34% 42% at 82% 58%, rgba(34, 211, 238, 0.24), transparent 70%),
+    radial-gradient(28% 30% at 55% 90%, rgba(124, 58, 237, 0.18), transparent 70%);
+  filter: blur(70px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  animation: aurora 26s ease-in-out infinite alternate;
+}
+
+/* Indicador de scroll: linha que corre sem parar */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 1px;
+  height: clamp(40px, 8vh, 80px);
+  background: linear-gradient(to bottom, transparent, var(--bone), transparent);
+  background-size: 100% 220%;
+  opacity: 0.5;
+  animation: scrollLine 2.6s var(--ease) infinite;
+}
+
+.hero .container {
+  position: relative;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3.2rem, 11.5vw, 10.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  color: var(--bone);
+}
+
+.hero p {
+  max-width: 46ch;
+  margin-top: clamp(24px, 3vw, 40px);
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+  line-height: 1.6;
+  color: var(--smoke);
+  text-wrap: pretty;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+
+/* ==========================================================================
+   5. BOTÕES
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 30px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 400ms var(--ease),
+    color 400ms var(--ease),
+    border-color 400ms var(--ease),
+    transform 400ms var(--ease),
+    box-shadow 400ms var(--ease);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--bone);
+  color: var(--void);
+}
+
+.btn-primary:hover {
+  background: var(--ember);
+  box-shadow: 0 10px 40px rgba(249, 115, 22, 0.35);
+}
+
+.btn-ghost {
+  color: var(--bone);
+  border-color: var(--line-strong);
+}
+
+.btn-ghost:hover {
+  color: var(--laser);
+  border-color: var(--laser);
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.15);
+}
+
+
+/* ==========================================================================
+   6. SOBRE — Manifesto (o <aside class="about-card">)
+   ========================================================================== */
+
+.about-card {
+  width: min(var(--max), 100% - var(--gutter) * 2);
+  margin: 0 auto;
+  padding: var(--section-y) 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  grid-template-areas:
+    'photo title'
+    'photo text'
+    'photo skills';
+  grid-template-rows: auto auto 1fr;
+  column-gap: clamp(32px, 7vw, 120px);
+  align-items: start;
+}
+
+.about-photo {
+  grid-area: photo;
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 4 / 5;
+  max-width: 460px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--obsidian);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.04);
+  transition: transform 1400ms var(--ease);
+}
+
+.about-card:hover .about-photo img {
+  transform: scale(1);
+}
+
+.about-card h2 {
+  grid-area: title;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 6vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: clamp(24px, 3vw, 40px);
+}
+
+.about-card p {
+  grid-area: text;
+  max-width: 34ch;
+  font-size: clamp(1.35rem, 1rem + 1.6vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--bone);
+  text-wrap: pretty;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.about-card .skills {
+  grid-area: skills;
+  align-self: end;
+  margin-top: clamp(32px, 4vw, 56px);
+}
+
+/* Chips com borda de gradiente cônico (gira ao passar o mouse) */
+.skill {
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.2;
+  color: var(--bone);
+  background:
+    linear-gradient(var(--obsidian), var(--obsidian)) padding-box,
+    conic-gradient(
+      from var(--angle),
+      var(--graphite) 0%,
+      var(--graphite) 55%,
+      var(--laser) 75%,
+      var(--plasma) 90%,
+      var(--graphite) 100%
+    ) border-box;
+  transition: color 400ms var(--ease), transform 400ms var(--ease);
+}
+
+.skill:hover {
+  color: var(--laser);
+  transform: translateY(-2px);
+  animation: spin 3s linear infinite;
+}
+
+
+/* ==========================================================================
+   7. PROJETOS — The Reel
+   ========================================================================== */
+
+.projects {
+  padding: var(--section-y) 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 8vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  max-width: 14ch;
+}
+
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  counter-reset: proj;
+  margin-top: clamp(48px, 7vw, 112px);
+  border-bottom: 1px solid var(--line);
+}
+
+.project-card {
+  --mx: 50%;
+  --my: 50%;
+  counter-increment: proj;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  grid-template-areas: 'num icon title desc link';
+  align-items: center;
+  column-gap: clamp(16px, 2.5vw, 40px);
+  padding: clamp(28px, 3.4vw, 48px) 0;
+  /* linha fixa + linha de gradiente que "desenha" no hover */
+  background:
+    linear-gradient(90deg, var(--plasma), var(--laser)) top left / 0 1px no-repeat,
+    linear-gradient(var(--line), var(--line)) top left / 100% 1px no-repeat;
+  transition: background-size 900ms var(--ease);
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  background-size: 100% 1px, 100% 1px;
+}
+
+/* Numeração mono */
+.project-card::before {
+  content: counter(proj, decimal-leading-zero);
+  grid-area: num;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--smoke);
+  transition: color 500ms var(--ease);
+}
+
+/* Spotlight que segue o cursor (--mx / --my vêm do script.js) */
+.project-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 calc(var(--gutter) * -0.4);
+  z-index: -1;
+  background: radial-gradient(520px circle at var(--mx) var(--my), rgba(124, 58, 237, 0.16), transparent 65%);
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+  pointer-events: none;
+}
+
+.project-card:hover::after,
+.project-card:focus-visible::after {
+  opacity: 1;
+}
+
+.project-card:hover::before {
+  color: var(--laser);
+}
+
+.project-icon {
+  grid-area: icon;
+  font-size: 1.15rem;
+  color: var(--smoke);
+  transition: color 500ms var(--ease), transform 700ms var(--ease);
+}
+
+.project-card:hover .project-icon {
+  color: var(--laser);
+  transform: scale(1.25) rotate(-8deg);
+}
+
+.project-card h3 {
+  grid-area: title;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 1.1rem + 2.2vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  transition: transform 700ms var(--ease);
+}
+
+.project-card:hover h3 {
+  transform: translateX(14px);
+}
+
+.project-card p {
+  grid-area: desc;
+  max-width: 48ch;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--smoke);
+  transition: color 500ms var(--ease);
+}
+
+.project-card:hover p {
+  color: var(--bone);
+}
+
+.project-link {
+  grid-area: link;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--bone);
+  white-space: nowrap;
+}
+
+/* Sublinhado que desenha */
+.project-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--signature);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease);
+}
+
+.project-card:hover .project-link::before {
+  transform: scaleX(1);
+}
+
+/* Seta diagonal */
+.project-link::after {
+  content: '↗';
+  display: inline-block;
+  transition: transform 500ms var(--ease), color 500ms var(--ease);
+}
+
+.project-card:hover .project-link::after {
+  transform: translate(3px, -3px);
+  color: var(--ember);
+}
+
+
+/* ==========================================================================
+   8. CONTATO — The Finale
+   ========================================================================== */
+
+.contact {
+  padding: var(--section-y) 0 calc(var(--section-y) * 0.7);
+  border-top: 1px solid var(--line);
+}
+
+.contact .section-title {
+  max-width: none;
+  font-size: clamp(3.4rem, 15vw, 14rem);
+  line-height: 0.86;
+}
+
+.contact .container > p {
+  max-width: 40ch;
+  margin-top: clamp(20px, 2.5vw, 32px);
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--smoke);
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(48px, 6vw, 96px);
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+  padding: clamp(18px, 2.4vw, 32px) 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.6rem, 1rem + 3.4vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--bone);
+  border-top: 1px solid var(--line);
+  transition: padding-left 700ms var(--ease), color 500ms var(--ease);
+}
+
+.contact-link i {
+  width: 1.1em;
+  font-size: 0.55em;
+  text-align: center;
+  color: var(--smoke);
+  transition: color 500ms var(--ease);
+}
+
+/* Seta que aparece na diagonal */
+.contact-link::after {
+  content: '↗';
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 0.8em;
+  color: var(--laser);
+  opacity: 0;
+  transform: translate(-16px, 16px);
+  transition: opacity 500ms var(--ease), transform 700ms var(--ease);
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  padding-left: clamp(12px, 2vw, 32px);
+}
+
+.contact-link:hover i,
+.contact-link:focus-visible i {
+  color: var(--laser);
+}
+
+.contact-link:hover::after,
+.contact-link:focus-visible::after {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+
+/* ==========================================================================
+   9. FOOTER
+   ========================================================================== */
+
+footer {
+  padding: 28px 0 40px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--smoke);
+}
+
+footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 12px;
+}
+
+/* Status: dot pulsante */
+footer .container::before {
+  content: '';
+  order: 1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: pulse 2.2s ease-out infinite;
+}
+
+footer .container::after {
+  content: 'Disponível para projetos';
+  order: 2;
+  color: var(--bone);
+}
+
+footer p {
+  order: 3;
+  margin-left: auto;
+}
+
+footer p::after {
+  content: ' — feito com obsessão';
+}
+
+
+/* ==========================================================================
+   10. BOTÕES FLUTUANTES
+   ========================================================================== */
+
+.floating-buttons {
+  position: fixed;
+  right: clamp(14px, 2vw, 28px);
+  bottom: clamp(14px, 2vw, 28px);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.floating-btn {
+  --brand: var(--laser);
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: var(--bone);
+  background: rgba(13, 13, 16, 0.7);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition:
+    transform 500ms var(--ease),
+    color 400ms var(--ease),
+    background-color 400ms var(--ease),
+    border-color 400ms var(--ease),
+    box-shadow 400ms var(--ease);
+}
+
+.floating-btn.whatsapp { --brand: #25d366; }
+.floating-btn.gmail    { --brand: #ea4335; }
+.floating-btn.linkedin { --brand: #3b82f6; }
+.floating-btn.github   { --brand: var(--bone); }
+
+.floating-btn:hover,
+.floating-btn:focus-visible {
+  transform: translateX(-4px);
+  color: var(--void);
+  background: var(--brand);
+  border-color: var(--brand);
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--brand) 45%, transparent);
+}
+
+.tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  line-height: 1.2;
+  white-space: nowrap;
+  color: var(--bone);
+  background: var(--obsidian);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(8px, -50%);
+  transition:
+    opacity 300ms var(--ease),
+    transform 500ms var(--ease),
+    visibility 300ms;
+  pointer-events: none;
+}
+
+.floating-btn:hover .tooltip,
+.floating-btn:focus-visible .tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, -50%);
+}
+
+
+/* ==========================================================================
+   11. KEYFRAMES
+   ========================================================================== */
+
+@keyframes aurora {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1); }
+  50%  { transform: translate3d(3%, 2%, 0) scale(1.08); }
+  100% { transform: translate3d(-1%, 4%, 0) scale(1.03); }
+}
+
+@keyframes scrollLine {
+  0%   { background-position: 0 -120%; }
+  100% { background-position: 0 120%; }
+}
+
+@keyframes spin {
+  to { --angle: 360deg; }
+}
+
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+  80%, 100% { box-shadow: 0 0 0 10px rgba(52, 211, 153, 0); }
+}
+
+
+/* ==========================================================================
+   12. REVELAÇÕES POR SCROLL (progressive enhancement)
+   Só rodam em navegadores com scroll-driven animations (Chrome/Edge/Safari 26+).
+   Nos demais, o conteúdo simplesmente aparece, sem perder nada.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+
+  /* Barra de progresso no topo */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 600;
+    width: 100%;
+    height: 2px;
+    background: var(--signature);
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+
+  /* Mask-reveal: nada aparece, tudo se revela */
+  .section-title,
+  .project-card,
+  .contact-link,
+  .contact .container > p {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 55%;
+  }
+
+  .about-photo {
+    animation: revealSide linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
+  /* Manifesto: destaque progressivo conforme o scroll */
+  .about-card p {
+    color: transparent;
+    background: linear-gradient(
+      180deg,
+      var(--bone) 0%,
+      var(--bone) var(--p),
+      var(--smoke) calc(var(--p) + 24%)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: fillText linear both;
+    animation-timeline: view();
+    animation-range: entry 35% cover 55%;
+  }
+
+  @keyframes reveal {
+    from {
+      clip-path: inset(0 0 100% 0);
+      translate: 0 40px;
+    }
+    to {
+      clip-path: inset(-40px);
+      translate: 0 0;
+    }
+  }
+
+  @keyframes revealSide {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes fillText {
+    from { --p: -24%; }
+    to   { --p: 100%; }
+  }
+
+  @keyframes progress {
+    to { transform: scaleX(1); }
+  }
+}
+
+
+/* ==========================================================================
+   13. RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .project-card {
+    grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1.2fr) auto;
+    grid-template-areas: 'num title desc link';
+  }
+
+  .project-icon {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .about-card {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'title'
+      'photo'
+      'text'
+      'skills';
+    grid-template-rows: none;
+    row-gap: 0;
+  }
+
+  .about-card h2 {
+    margin-bottom: 32px;
+  }
+
+  .about-photo {
+    max-width: 380px;
+    margin-bottom: 40px;
+  }
+
+  .about-card p {
+    max-width: none;
+  }
+
+  .project-card {
+    grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      'num title link'
+      '.   desc  desc';
+    row-gap: 14px;
+  }
+
+  .project-card:hover h3 {
+    transform: none;
+  }
+
+  footer p {
+    margin-left: 0;
+    width: 100%;
+    order: 4;
+  }
+}
+
+@media (max-width: 560px) {
+  header {
+    padding: 18px 0;
+  }
+
+  .subtitle-role {
+    display: none;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+
+  .hero::after {
+    display: none;
+  }
+
+  .contact-link {
+    font-size: clamp(1.4rem, 7vw, 2rem);
+  }
+}
+
+/* Dispositivos de toque: sem hover, então a seta já aparece */
+@media (hover: none) {
+  .contact-link::after {
+    opacity: 1;
+    transform: none;
+  }
+
+  .tooltip {
+    display: none;
+  }
+}
+
+@media (max-height: 520px) {
+  .hero::after {
+    display: none;
+  }
+}
+
+
+/* ==========================================================================
+   14. REDUCED MOTION — fallback estático
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .about-card p {
+    color: var(--bone);
+    background: none;
+  }
+
+  .about-photo img {
+    transform: none;
+  }
+}
