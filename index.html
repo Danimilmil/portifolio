@@ -50,6 +50,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="progress" aria-hidden="true"></div>
+    <div class="spotlight" aria-hidden="true"></div>
    
     <header>
         <div class="container">
@@ -62,6 +64,7 @@
     </header>
 
     <section class="hero">
+        <canvas class="hero-canvas" aria-hidden="true"></canvas>
         <div class="container">
             <h1>Meus Projetos</h1>
             <p>Confira abaixo alguns dos sites e aplicações que desenvolvi. Toque em um card para abrir o projeto.</p>
@@ -74,7 +77,7 @@
 
   
     <aside class="about-card" aria-label="Sobre mim">
-        <div class="about-photo">
+        <div class="about-photo" data-parallax>
             <img src="foto-daniel.jpg" alt="Foto de Daniel Dias" width="360" height="450">
         </div>
         <h2>Sobre Mim</h2>
